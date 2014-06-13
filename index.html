@@ -145,13 +145,13 @@ songzaServices.factory('songzaApi', function ($http) {
             return $http.get('http://musicapi.azurewebsites.net/api/songza/categories');
         },
         collections: function (category) {
-            return $http.get('http://musicapi.azurewebsites.net/api/songza/CategoryFilter', { category: category });
+            return $http.post('http://musicapi.azurewebsites.net/api/songza/CategoryFilter', { category: category });
         },
         stations: function (station_ids) {
-            return $http.get('http://musicapi.azurewebsites.net/api/songza/Stations', station_ids);
+            return $http.post('http://musicapi.azurewebsites.net/api/songza/Stations', station_ids);
         },
         nextSong: function (station) {
-            return $http.get('http://musicapi.azurewebsites.net/api/songza/StationNext', { stationID: station.id });
+            return $http.post('http://musicapi.azurewebsites.net/api/songza/StationNext', { stationID: station.id });
         }
     };
 });
