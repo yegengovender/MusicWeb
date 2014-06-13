@@ -199,7 +199,7 @@ SongzaApp.directive('scrollList', function () {
     return {
         restrict: 'E',
         scope: {
-            itemList: '=collection',
+            itemList: '=collection'
         },
         templateUrl: "/Templates/template.html"
     };
@@ -275,7 +275,7 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
 
     // Collections
     var getCollections = function (category) {
-        songzaApi.collections(category).then(function (result) {
+        songzaApi.collections(category.Name).then(function (result) {
             $scope.collections = makeList(result.data, $scope.collectionClick, setStyle);
             getStations($scope.collections.selectedItem);
         });
