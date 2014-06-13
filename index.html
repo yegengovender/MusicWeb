@@ -142,16 +142,16 @@ var songzaDirectives = angular.module('songzaDirectives', []);
 songzaServices.factory('songzaApi', function ($http) {
     return {
         categories: function () {
-            return $http.get('@Url.Action("Categories")');
+            return $http.get('http://musicapi.azurewebsites.net/api/songza/categories');
         },
         collections: function (category) {
-            return $http.post('@Url.Action("CategoryFilter")', { category: category });
+            return $http.get('http://musicapi.azurewebsites.net/api/songza/CategoryFilter', { category: category });
         },
         stations: function (station_ids) {
-            return $http.post('@Url.Action("Stations")', station_ids);
+            return $http.get('http://musicapi.azurewebsites.net/api/songza/Stations', station_ids);
         },
         nextSong: function (station) {
-            return $http.post('@Url.Action("StationNext")', { stationID: station.id });
+            return $http.get('http://musicapi.azurewebsites.net/api/songza/StationNext', { stationID: station.id });
         }
     };
 });
