@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<!--suppress HtmlUnknownAttribute -->
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="SongzaApp" ng-controller="songzaController">
 <head>
     <meta charset="utf-8" />
@@ -7,53 +8,7 @@
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-    <style>
-        body {
-            color: #f5f5e5;
-            background-color: #808080;
-        }
-        div.menu {
-            position: relative;
-            transition: top 500ms;
-        }
-
-        div.column {
-            height: 450px;
-            overflow: hidden;
-            text-align: center;
-            background-color: rgba(41,41,41,0.75);
-        }
-
-        div.current {
-            background-color: rgba(41,41,41,0.5);
-        }
-
-        a {
-            display: block;
-            font-size: 10px;
-            height: 30px;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: grey;
-            transition: font-size 500ms, color 500ms;
-        }
-
-        a.current {
-            font-size: 12px;
-            color: #f5f5e5;
-        }
-
-        #main{
-            background-color: #303030;
-            background-repeat: no-repeat;
-            background-size: 100%;
-            background-position-x: 50%;
-            background-position-y: bottom;
-            transition: background-position 15s;
-        }
-    </style>
+    <link rel="stylesheet" href="site.css">
 </head>
 
 <body ng-keypress="doKeyEvent($event)" ng-keydown="doKeyEvent($event)">
@@ -96,6 +51,7 @@
 <div id="main" ng-style="mainStyle">
 
     <div class="row">
+        <!--suppress HtmlUnknownAttribute -->
         <scroll-list collection="categories"></scroll-list>
         <scroll-list collection="collections"></scroll-list>
         <scroll-list collection="stations"></scroll-list>
@@ -162,7 +118,7 @@ songzaServices.factory('echoNestApi', function ($http) {
         },
         artistImages: function (id) {
             return $http.get('http://developer.echonest.com/api/v4/artist/images?api_key=KUDAPUSC2PCCLMIO7&format=json&id=' + id);
-        },
+        }
     };
 });
 
@@ -250,9 +206,9 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
     var setColumn = function(selectColumn) {
         $scope.columns = [$scope.categories, $scope.collections, $scope.stations];
         $scope.column = selectColumn;
-        for (var column in $scope.columns) {
-            $scope.columns[column].selected = ($scope.columns[column] == selectColumn);
-        }
+        $scope.columns.forEach(function (column) {
+            column.selected = (column == selectColumn);
+        });
     };
 
 
@@ -267,7 +223,7 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
         setColumn($scope.categories);
     });
 
-    $scope.categoryClick = function (category) {
+    $scope.categoryClick = function () {
         setColumn($scope.categories);
         getCollections($scope.categories.selectedItem);
     };
@@ -281,8 +237,8 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
         });
     };
 
-    $scope.collectionClick = function (collection) {
-        setColumn($scope.collections)
+    $scope.collectionClick = function () {
+        setColumn($scope.collections);
         getStations($scope.collections.selectedItem);
     };
 
@@ -294,25 +250,13 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
     };
 
 
-    $scope.stationClick = function (station) {
+    $scope.stationClick = function () {
         setColumn($scope.stations)
     };
 
 
 
     // Keyboard UI
-    $scope.doKeyEvent = function (event) {
-        var keycode = event.keyCode;
-        switch (keycode) {
-            case 38: upArrow(); event.preventDefault(); break;
-            case 40: downArrow(); event.preventDefault(); break;
-            case 37: leftArrow(); event.preventDefault(); break;
-            case 39: rightArrow(); event.preventDefault(); break;
-            case 32: spaceBar(); event.preventDefault(); break;
-        }
-        console.debug(keycode);
-    };
-
     var upArrow = function () {
         $scope.column.decrement();
     };
@@ -353,6 +297,18 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
         $scope.playStation(station);
     };
 
+    $scope.doKeyEvent = function (event) {
+        var keycode = event.keyCode;
+        switch (keycode) {
+            case 38: upArrow(); event.preventDefault(); break;
+            case 40: downArrow(); event.preventDefault(); break;
+            case 37: leftArrow(); event.preventDefault(); break;
+            case 39: rightArrow(); event.preventDefault(); break;
+            case 32: spaceBar(); event.preventDefault(); break;
+        }
+        console.debug(keycode);
+    };
+
     $scope.getStationNext = function (station) {
         songzaApi.nextSong(station).then(function (result) {
             $scope.stationNext = result.data;
@@ -368,10 +324,10 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
 
                     echoNestApi.artistImages(id).then(function (result) {
                         var images = result.data.response.images;
-                        for(i=0;i<images.length;i++) {
+                        for(var i=0;i<images.length;i++) {
                             var url = images[i].url;
                             setTimeout(function(){
-                                var pos = i % 2==0 ? 'top': 'bottom';
+                                var pos = (i % 2)==0 ? 'top': 'bottom';
                                 $scope.mainStyle = {'background-image': 'url("' + url + '")', 'background-position-y': pos};
                             },15000);
                         }
@@ -403,8 +359,6 @@ SongzaApp.controller('songzaController', function ($scope, $http, $sce, audio, s
 
 
     $scope.isPlaying = false;
-    var stationStarted = false;
-
 });
 
 

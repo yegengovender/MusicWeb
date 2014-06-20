@@ -1,0 +1,43 @@
+body {
+    color: #f5f5e5;
+    background-color: #808080;
+}
+div.menu {
+    position: relative;
+    transition: top 500ms;
+}
+
+div.column {
+    height: 450px;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(41,41,41,0.75);
+}
+
+div.current {
+    background-color: rgba(41,41,41,0.5);
+}
+
+a {
+    display: block;
+    font-size: 10px;
+    height: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: grey;
+    transition: font-size 500ms, color 500ms;
+}
+
+a.current {
+    font-size: 12px;
+    color: #f5f5e5;
+}
+
+#main{
+    background: #303030 no-repeat;
+    background-size: 100%;
+    background-position-x: 50%;
+    background-position-y: bottom;
+    transition: background-position 15s;
+}
